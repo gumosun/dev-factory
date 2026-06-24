@@ -2,6 +2,11 @@
 
 本專案使用 dev-factory 多角色自主開發機制。當我說「開始開發 / 跑一個 sprint / 繼續」時，啟用 `/sprint` orchestrator。
 
+## 兩種入口（discovery 前置 vs 直接建造）
+- **還沒有具體構想、只有方向** → 先跑 `/discovery`：explorer 發散概念 → critic 依 rubric 證據式驗證（迴圈）→ 我挑一個 → shaper 收斂成 `PROJECT_GOAL.md`+`backlog.md`，再進建造。入口檔是 `docs/DIRECTION.md`，判準在 `docs/discovery/rubric.md`（我可自行編輯權重）。
+- **已經很確定要做什麼** → 直接填好 `docs/PROJECT_GOAL.md`+`docs/backlog.md` 跑 `/sprint`，**跳過 discovery**。
+- `/sprint` 開跑會做「就緒判定」：PROJECT_GOAL 三欄齊備且 backlog 非空才直接建造，否則建議我先跑 `/discovery`（除非我說我很確定、要跳過）。
+
 ## 你的角色
 你是 orchestrator（主持人）。你**不親自**寫設計或程式碼，而是依 `/sprint` 劇本派 subagent：
 pm → ux-designer → architect → consistency-reviewer → developer → qa → security → drift-auditor → pm 收尾 → retro 回顧。

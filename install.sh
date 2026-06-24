@@ -26,9 +26,9 @@ copy_core() {
   local claude_dir="$1"
   mkdir -p "$claude_dir/agents" "$claude_dir/skills"
   cp "$FACTORY_DIR"/agents/*.md "$claude_dir/agents/"
-  cp -R "$FACTORY_DIR"/skills/sprint "$claude_dir/skills/"
-  echo "  ✓ agents → $claude_dir/agents/"
-  echo "  ✓ skill  → $claude_dir/skills/sprint/"
+  cp -R "$FACTORY_DIR"/skills/* "$claude_dir/skills/"
+  echo "  ✓ agents → $claude_dir/agents/（含 discovery 角色 explorer/critic/shaper）"
+  echo "  ✓ skills → $claude_dir/skills/（/sprint 建造管線、/discovery 前置管線）"
 }
 
 seed_project() {
@@ -42,13 +42,16 @@ seed_project() {
   fi
   # docs 骨架
   mkdir -p "$proj/docs/sprints" "$proj/docs/design/ux" "$proj/docs/design/tech" \
-           "$proj/docs/design/adr" "$proj/docs/design/review" "$proj/docs/retro"
+           "$proj/docs/design/adr" "$proj/docs/design/review" "$proj/docs/retro" \
+           "$proj/docs/discovery"
   [ -f "$proj/docs/PROJECT_GOAL.md" ] || cp "$FACTORY_DIR/templates/PROJECT_GOAL.md" "$proj/docs/PROJECT_GOAL.md"
   [ -f "$proj/docs/backlog.md" ]      || cp "$FACTORY_DIR/templates/backlog.md"      "$proj/docs/backlog.md"
   [ -f "$proj/docs/LESSONS.md" ]      || cp "$FACTORY_DIR/templates/LESSONS.md"      "$proj/docs/LESSONS.md"
+  [ -f "$proj/docs/DIRECTION.md" ]    || cp "$FACTORY_DIR/templates/DIRECTION.md"    "$proj/docs/DIRECTION.md"
+  [ -f "$proj/docs/discovery/rubric.md" ] || cp "$FACTORY_DIR/templates/discovery-rubric.md" "$proj/docs/discovery/rubric.md"
   cp "$FACTORY_DIR/templates/adr-template.md"        "$proj/docs/design/adr/_TEMPLATE.md"
   cp "$FACTORY_DIR/templates/sprint-log-template.md" "$proj/docs/sprints/_TEMPLATE.md"
-  echo "  ✓ docs/ 骨架（PROJECT_GOAL、backlog、範本）"
+  echo "  ✓ docs/ 骨架（PROJECT_GOAL、backlog、DIRECTION、discovery/rubric、範本）"
 }
 
 if [ "$MODE" = "user" ]; then
