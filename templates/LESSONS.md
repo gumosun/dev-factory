@@ -12,6 +12,11 @@
 
 ## 各角色要特別注意的
 <例：2026-06-13 (sprint-1) QA：錯誤路徑與空狀態最容易被漏，務必對照 UX 規格逐一驗。>
+- 2026-06-24 (framework) developer：被 QA/security 退回時，先用 `superpowers:receiving-code-review` 技術驗證回饋是否成立（不盲從），再用 `superpowers:systematic-debugging` 找根因、寫重現測試，才循 TDD 修——修症狀不算修好。
+- 2026-06-24 (framework) QA：開 issue 前用 `superpowers:systematic-debugging` 查根因，issue 要帶根因/可疑層而非只報症狀（只在發現失敗時觸發）。
 
 ## 已驗證有效的做法
 <例：2026-06-13 (sprint-1) 技術設計先畫資料流再定 schema，一致性 gate 一次就過。>
+- 2026-06-24 (framework) developer 走強制 TDD（`superpowers:test-driven-development`）：先寫失敗測試、親眼看到紅燈才實作，一任務一 commit。已實證可運作（git 歷史顯示實作只出現在綠燈 commit）。
+- 2026-06-24 (framework) architect 階段5 任務拆解採 `superpowers:writing-plans` 格式（原子步驟 / Files / Interfaces / 禁 placeholder / 自檢），但**覆寫上游兩點**：輸出仍走 `docs/sprints/sprint-<N>-tasks.md`、不觸發其 execution-handoff/worktree（派工由 orchestrator 主導）。已實證 architect→developer→qa 全鏈能用此格式串接（檔案即交接、AC 可追溯不受干擾）。
+- 2026-06-24 (framework) 分層鐵則：dev-factory 治理層（sprint 劇本 / 4 gate / AC 可追溯 / ADR / LESSONS）是唯一外層；superpowers 只當各棒內部執行紀律，絕不讓 `using-superpowers / executing-plans / finishing-a-development-branch / using-git-worktrees` 接管派工、worktree 或收尾。
