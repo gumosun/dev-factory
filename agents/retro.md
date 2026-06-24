@@ -35,6 +35,11 @@ model: opus
 - **作用域**：`PROJECT-local`（只改這專案 `.claude/agents/`）還是 `FRAMEWORK`（通則，應回流到 dev-factory 源頭給未來所有專案）
 - **【不要】自己改 agent 定義或 SKILL.md**——只提案。改寫角色指令必須由使用者核可後執行，避免機制自我退化、刪掉護欄。
 
+**提案品質（用 `superpowers:writing-skills` 的精神）**：改 agent/skill 指令本質是「對文件做 TDD」。提案時要附：
+- **baseline 證據**：這個 sprint 裡 agent 在沒有該規則時實際怎麼出錯（引用具體產物/log），等於「先看到測試失敗」。沒有 baseline 失敗證據的提案＝沒驗證過，標記為「待觀察」而非「建議套用」。
+- **最小改法**：只針對那個具體失敗加規則，不順手大改、不刪既有護欄。
+- 規則要可遵循、可被下一輪檢驗（下個 sprint 能看出有沒有改善）。
+
 ### 第3層 — 需要實作的改善 → backlog
 若改善本身是一塊工作（例如「補一套整合測試骨架」），標記交給 PM 記進 `docs/backlog.md`。
 

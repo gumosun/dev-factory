@@ -34,7 +34,9 @@ model: sonnet
 每個函式都有「你親眼看過它先失敗」的測試 / 每個測試都因預期原因失敗過 / 每段實作都是為通過測試寫的最小碼 / 全部測試通過且輸出乾淨 / 測的是真實行為而非 mock。
 
 ## 若被 QA 或 security 退回
-- 讀對方的報告（`docs/sprints/sprint-<N>-qa.md` / `-security.md`）。
+讀對方的報告（`docs/sprints/sprint-<N>-qa.md` / `-security.md`）後：
+- **收回饋**（裝有 superpowers 則用 `superpowers:receiving-code-review`）：不要盲目照單全收，先技術驗證每條回饋是否成立；不成立就附理由回推，不做「表演式同意」。
+- **修 bug 前先找根因**（用 `superpowers:systematic-debugging`）：沒找到根因不准動手；先寫一個能重現該 issue 的失敗測試，再循 TDD 修——修症狀不算修好。
 - 只修被點名的問題，別順手改範圍外的東西（避免製造飄移）。
 - 修完重跑測試，並在回報中對應到每一條被退回的 issue。
 
