@@ -1,17 +1,30 @@
 # dev-factory
 
-一套**可複用**的多角色自主開發機制，跑在 Claude Code 上。給它一個專案目標與 backlog，它會以 orchestrator 主持 PM → UX → 技術設計 → 一致性檢查 → 開發 → QA → 資安 → 飄移稽核 → 收尾的完整 sprint，角色之間透過檔案交接，gate 不過自動退回重跑，只在 sprint 收尾或卡關時找你。
+一套**可複用**的多角色自主開發機制，跑在 Claude Code 上。兩段式：
+
+- **`/discovery`（前置，選用）**：只有方向、還沒具體構想時，agent 幫你發散概念、用證據反覆批判驗證、收斂成專案目標。
+- **`/sprint`（建造）**：給定目標與 backlog，orchestrator 主持 PM → UX → 技術設計 → 一致性檢查 → 開發 → QA → 資安 → 飄移稽核 → 收尾的完整 sprint，角色之間透過檔案交接，gate 不過自動退回重跑，只在 sprint 收尾或卡關時找你。
+
+已經很確定要做什麼？直接填目標跑 `/sprint`，跳過 discovery。各棒「內部怎麼做」委派給 [superpowers](https://github.com/obra/superpowers) 的成熟紀律（TDD、writing-plans、systematic-debugging、brainstorming…），dev-factory 自己專注在治理/編排。
 
 這個資料夾是「真相來源」，用 `install.sh` 裝進任何專案。
 
 ## 內容
 ```
 dev-factory/
-├── agents/        9 個角色 subagent 定義（含 retro 自我學習）
-├── skills/sprint/ orchestrator（/sprint 劇本）
-├── templates/     CLAUDE.md 契約 + PROJECT_GOAL/backlog/LESSONS/ADR/sprint 範本
-├── docs/PIPELINE.md  完整流程圖與設計理念
-└── install.sh     裝進目標專案
+├── agents/          12 個角色 subagent（建造9 + discovery 3: explorer/critic/shaper）
+├── skills/sprint/   建造 orchestrator（/sprint 劇本）
+├── skills/discovery/ 前置 orchestrator（/discovery 劇本）
+├── templates/       CLAUDE.md 契約 + PROJECT_GOAL/backlog/DIRECTION/LESSONS/rubric/ADR/sprint 範本
+├── docs/PIPELINE.md 完整流程圖與設計理念
+└── install.sh       裝進目標專案
+```
+
+## 前置依賴：superpowers（建議）
+各 agent 的執行紀律會優先呼叫 superpowers skill（未安裝則走內嵌後備）。建議使用者層安裝一次，所有專案共用：
+```
+/plugin marketplace add obra/superpowers-marketplace
+/plugin install superpowers@superpowers-marketplace
 ```
 
 ## 快速開始
@@ -20,14 +33,18 @@ dev-factory/
 cd /path/to/your-new-project
 ~/Desktop/dev-factory/install.sh
 
-# 2. 填目標與待辦
-#    編輯 docs/PROJECT_GOAL.md、docs/backlog.md
+# 2a. 已經知道要做什麼 → 填目標與待辦
+#     編輯 docs/PROJECT_GOAL.md、docs/backlog.md，跑 /sprint
+# 2b. 只有方向、還沒構想 → 填方向
+#     編輯 docs/DIRECTION.md（可調 docs/discovery/rubric.md 權重），先跑 /discovery
+#     收斂出 PROJECT_GOAL+backlog 後再進 /sprint
 
 # 3. 在該專案開 Claude Code
 #    Shift+Tab 切到 accept-edits 權限模式（讓它連續動手不每步問你）
 
-# 4. 開場輸入：
+# 4. 開場輸入（建造）：
 #    讀 CLAUDE.md，依自主 sprint 工作流開始開發，先跑單輪後給我摘要
+#    或（前置）：讀 CLAUDE.md，我只有方向還沒構想，跑 /discovery 幫我收斂
 ```
 
 確認單輪跑通、`docs/` 交接檔案有正常產出後，再用 `/loop /sprint` 連跑多個 sprint。
