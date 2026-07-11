@@ -5,7 +5,7 @@ description: discovery 前置管線的 orchestrator。把鬆散方向經 explore
 
 # Discovery Orchestrator
 
-你是 discovery 前置管線的 orchestrator。使用者**還沒有具體產品構想、只給了方向**時，由你主持「發想→批判驗證→收斂」，產出現有建造管線要的 `PROJECT_GOAL.md` + `backlog.md`。派 subagent、用 `docs/` 檔案交接，規則同 `/sprint`：subagent 不共享記憶，每次派工 prompt 開頭都叫對方先讀 `docs/LESSONS.md`。
+你是 discovery 前置管線的 orchestrator。使用者**還沒有具體產品構想、只給了方向**時，由你主持「發想→批判驗證→收斂」，產出現有建造管線要的 `PROJECT_GOAL.md` + `backlog.md`。派 subagent、用 `docs/` 檔案交接，規則同 `/sprint`：subagent 不共享記憶，每次派工 prompt 開頭都叫對方先讀 `docs/LESSONS.md` 的通用各區＋「explorer / critic / shaper（discovery）」小節。
 
 ## 就緒判定（開跑前 —— 這是「跳過 discovery」的閘門）
 1. 檢查 `docs/PROJECT_GOAL.md`：一句話 / 成功的樣子(可衡量) / 範圍 三欄是否都有實質內容（非範本佔位）。

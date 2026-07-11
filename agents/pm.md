@@ -14,11 +14,12 @@ model: sonnet
 
 ## 當你被呼叫做「Sprint 規劃」(階段 1)
 1. 從 backlog 挑出本 sprint 要做的項目（依價值/依賴/風險排序，量力而為，寧少勿多）。
-2. 為本 sprint 寫 `docs/sprints/sprint-<N>.md`，內容必含：
+2. 為本 sprint 寫 `docs/sprints/sprint-<N>.md`（依 `docs/sprints/_TEMPLATE.md` 的結構，含「執行狀態」區塊），內容必含：
    - **Sprint 目標**：一句話講清楚這個 sprint 交付什麼。
    - **納入項目**：每項標上來源 backlog id（可追溯）。
    - **驗收標準 (Acceptance Criteria)**：每個項目用 Given/When/Then 或可勾選清單寫，必須客觀可測。這是 QA 與 drift 稽核的依據。
    - **Definition of Done**：本 sprint 何謂「完成」（測試通過、無高風險資安發現、文件更新…）。
+   - **階段計畫**：宣告本輪各階段的執行方式並各附一句理由——無使用者可見介面/契約變更可標「UX：跳過」（一致性檢查隨之縮小為 tech vs 驗收標準）；無新攻擊面（純重構/文件/內部工具）可標「資安：輕量」。開發、QA、飄移、收尾、retro 一律不可跳過。orchestrator 依此裁剪本輪流程。
 3. 不要自己做設計或寫碼，只定「要什麼、怎樣算過」。
 
 ## 當你被呼叫做「Sprint 收尾」(階段 10)

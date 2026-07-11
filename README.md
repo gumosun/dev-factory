@@ -50,13 +50,15 @@ cd /path/to/your-new-project
 確認單輪跑通、`docs/` 交接檔案有正常產出後，再用 `/loop /sprint` 連跑多個 sprint。
 
 ## 安裝模式
-- **專案層級（預設）**：複製進 `<project>/.claude/`，專案自我完備、可進 git。升級框架就重跑 install。
-- **使用者層級**：`install.sh --user` 裝到 `~/.claude/`，所有專案共用 agents 與 `/sprint`（每個專案仍需各自的 CLAUDE.md + docs/）。
+- **專案層級（預設）**：複製進 `<project>/.claude/`，專案自我完備、可進 git。升級框架就重跑 install；並播種 `.claude/settings.json` 權限 allowlist（WebSearch/WebFetch，建議自行補上測試指令），減少自主連跑時的權限提示。
+- **使用者層級**：`install.sh --user` 裝到 `~/.claude/`，所有專案共用 agents 與 `/sprint`；每個專案再跑 `install.sh --seed-only <path>` 鋪 CLAUDE.md + docs/。
+- **升級保護**：install 會記錄檔案 hash（`.dev-factory-manifest`）。重跑時凡你本地改過的 agents/skills（例如已核可的 PROJECT-local 客製）一律跳過並警告，確定要覆蓋加 `--force`。
 
 ## 運作原理（重點）
 - Claude Code 的 subagent **不會自發互相討論**；是 orchestrator（主 session）把上一棒的產出餵給下一棒，編排成回合制流程。
 - subagent **不共享記憶**，唯一交接方式是 `docs/` 檔案，所以每個角色都被要求「開頭先讀、結尾必寫」。
-- gate（一致性/QA/資安/飄移）不過會**自動退回**對應角色，有迴圈上限，達上限才升級給你。
+- gate（一致性/QA/資安/飄移）不過會**自動退回**對應角色，有迴圈上限與 sprint 總修復預算，達上限才升級給你。
+- **狀態落地**：sprint 進度、gate 退回計數記在 sprint 主檔的「執行狀態」區塊，中斷或 context 壓縮後可續跑；每個 sprint 在 `sprint-<N>` 分支上進行，合併由你在收尾 gate 決定。PM 會在階段1宣告「階段計畫」，小 sprint 自動跳過 UX / 降級資安掃描，流程隨工作量伸縮。
 - **自我學習**：每個 sprint 後 retro 回顧摩擦點 → 教訓自動累積進 `docs/LESSONS.md`（全體下輪會讀）；改寫角色指令/流程則只提案到 `docs/retro/`，由你核可後才套用（FRAMEWORK 級的回流到本框架源頭）。記憶自動長、流程改靠 gate。
 
 詳見 `docs/PIPELINE.md`。

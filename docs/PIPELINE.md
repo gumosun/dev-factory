@@ -43,7 +43,7 @@
 
 ## 建造管線（/sprint）
 
-完整一輪 sprint 的 10 個階段。每關是 **agent gate**（不過退回上一棒重跑，不打擾使用者），只有階段 10 收尾是 **human gate**。
+完整一輪 sprint 的 11 個階段。每關是 **agent gate**（不過退回上一棒重跑，不打擾使用者），只有 sprint 收尾（retro 之後）是 **human gate**。PM 在階段 1 宣告「**階段計畫**」：無使用者可見介面/契約變更可跳過 UX（一致性檢查隨之縮小）、無新攻擊面可標資安輕量——流程隨 sprint 大小伸縮，但開發/QA/飄移/收尾/retro 永不跳過。
 
 ```
  ┌─────────────────────────── 一個 SPRINT ───────────────────────────┐
@@ -99,6 +99,8 @@
 - **治理在外、執行在內（與 superpowers 並存）**：dev-factory 自己是治理/編排層（sprint 劇本、gate、可追溯、自我學習）；各棒「內部怎麼做」則委派給 [superpowers](https://github.com/obra/superpowers) 的成熟紀律——developer 走 `test-driven-development`、architect 拆解用 `writing-plans`、qa/developer 用 `systematic-debugging`、explorer 用 `brainstorming`。orchestrator 永遠是唯一外層，superpowers 不接管派工/收尾。superpowers 為選用依賴（建議使用者層安裝），未裝時各 agent 有內嵌後備規則。
 
 ## 護欄
-- 每個修復迴圈有上限（一致性 2 輪、QA/資安各 3 輪）；達上限升級給使用者。
+- 每個修復迴圈有上限（一致性 2 輪、QA/資安各 3 輪）；各 gate 計數**獨立且不重置**，另有 **sprint 總修復預算 6 次**（任何 gate 的退回都累計）——達上限或預算即升級給使用者，防 gate 之間互彈空轉。
+- **狀態落地**：階段進度與所有迴圈計數記在 sprint 主檔的「執行狀態」區塊（orchestrator 每階段更新）；context 壓縮或中斷後以它為準續跑，不憑記憶。gate 報告第一行固定 `VERDICT: <判定>`，orchestrator 只讀判定與問題清單，控制 context 成本。
+- **分支隔離**：每個 sprint 在 `sprint-<N>` 分支上進行；合併回主分支由收尾 human gate 決定，orchestrator 不自行 merge。
 - 預設每個 sprint 收尾停下等放行；要連跑用 `/loop /sprint`。
 - 全自動連跑前，務必先跑通單輪，確認交接檔案真的有被讀寫。
