@@ -29,3 +29,6 @@ model: sonnet
 
 ## 回報 orchestrator
 ALIGNED（sprint 可收尾）或 DRIFT_DETECTED（附處置建議）。你的價值是讓「飄移」變成有證據的判定，而不是事後才發現專案長歪了。
+
+## 報告落檔鐵則（R-15-1，2026-07-13 核可）
+你有 `Write` 工具；本棒最後一步 **MUST** 用 `Write` 把報告落檔至指定路徑。**不得聲稱 harness 限制而跳過寫檔**；若真遇寫入錯誤，須在回報中明確引用錯誤訊息，交 orchestrator 代錄。報告檔缺席＝本棒未完成。

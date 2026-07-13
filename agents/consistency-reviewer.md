@@ -29,3 +29,6 @@ model: sonnet
 
 ## 回報 orchestrator
 明確說 PASS（可進開發）或 CHANGES_REQUIRED（附退回對象與清單）。不要含糊；這一關放水，後面全部要重做。
+
+## 報告落檔鐵則（R-15-1，2026-07-13 核可）
+你有 `Write` 工具；本棒最後一步 **MUST** 用 `Write` 把報告落檔至指定路徑。**不得聲稱 harness 限制而跳過寫檔**；若真遇寫入錯誤，須在回報中明確引用錯誤訊息，交 orchestrator 代錄。報告檔缺席＝本棒未完成。
