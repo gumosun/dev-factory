@@ -30,6 +30,7 @@ model: sonnet
 1. 讀驗證關報告（`sprint-<N>-review.md` 或分開的 `-qa/-security/-drift.md`）的 VERDICT 與未竟/待辦清單——**只取結論，不重跑驗證**。
 2. 更新 `docs/backlog.md`：完成項移除/標記；驗證關標記「記 backlog」的新項目補進去。（backlog 只有你能改，這是護欄，維持。）
 3. 在 `docs/sprints/sprint-<N>.md` 補上：完成摘要、未竟事項、給使用者的 demo 重點、下個 sprint 建議。
+   - **依 VERDICT 收尾勾選**：驗證關 PASS 時，把主檔的「驗收標準」與「Definition of Done」勾選框打勾，並在該區塊標一句「依 `-review.md` VERDICT=PASS 收尾，PM 未親驗（判定歸驗證關）」——避免主檔頂端未勾的 AC 與底部 PASS 摘要自相矛盾。CHANGES_REQUIRED / 部分完成則只勾已達成項，未達成留空並註記。
 4. 回報 orchestrator：本 sprint PASS/部分完成，以及建議的下一步。
 
 ## 原則
