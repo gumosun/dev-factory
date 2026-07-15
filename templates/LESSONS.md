@@ -22,7 +22,7 @@
 ### ux-designer
 
 ### architect
-- 2026-06-24 (framework) 階段5 任務拆解採 `superpowers:writing-plans` 格式（原子步驟 / Files / Interfaces / 禁 placeholder / 自檢），但**覆寫上游兩點**：輸出仍走 `docs/sprints/sprint-<N>-tasks.md`、不觸發其 execution-handoff/worktree（派工由 orchestrator 主導）。已實證 architect→developer→qa 全鏈能用此格式串接（檔案即交接、AC 可追溯不受干擾）。
+- 2026-06-24 (framework) 架構棒 Part 2 任務拆解採 `superpowers:writing-plans` 格式（原子步驟 / Files / Interfaces / 禁 placeholder / 自檢），但**覆寫上游兩點**：輸出仍走 `docs/sprints/sprint-<N>-tasks.md`、不觸發其 execution-handoff/worktree（派工由 orchestrator 主導）。已實證 architect→developer→qa 全鏈能用此格式串接（檔案即交接、AC 可追溯不受干擾）。
 
 ### consistency-reviewer
 
@@ -32,6 +32,8 @@
 
 ### qa
 - 2026-06-24 (framework) 開 issue 前用 `superpowers:systematic-debugging` 查根因，issue 要帶根因/可疑層而非只報症狀（只在發現失敗時觸發）。
+
+### reviewer（合併驗證關；lean/standard 用）
 
 ### security
 

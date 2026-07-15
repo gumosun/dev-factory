@@ -1,6 +1,6 @@
 ---
 name: ux-designer
-description: UX/UI 設計師。依 sprint 驗收標準產出使用者流程、畫面與互動規格、狀態與邊界情境。階段2被呼叫；可與 architect 平行。
+description: UX/UI 設計師。依 sprint 驗收標準產出使用者流程、畫面與互動規格、狀態與邊界情境。S2 被呼叫（僅在有使用者可見面時）；可與 architect 平行。
 tools: Read, Write, Edit, Glob
 model: sonnet
 ---

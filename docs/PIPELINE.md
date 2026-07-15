@@ -43,63 +43,66 @@
 
 ## 建造管線（/sprint）
 
-完整一輪 sprint 的 11 個階段。每關是 **agent gate**（不過退回上一棒重跑，不打擾使用者），只有 sprint 收尾（retro 之後）是 **human gate**。PM 在階段 1 宣告「**階段計畫**」：無使用者可見介面/契約變更可跳過 UX（一致性檢查隨之縮小）、無新攻擊面可標資安輕量——流程隨 sprint 大小伸縮，但開發/QA/飄移/收尾/retro 永不跳過。
+一輪 sprint 的邏輯階段 S1–S8。每關是 **agent gate**（不過退回上一棒重跑，不打擾使用者），只有 sprint 收尾（retro 之後）是 **human gate**。
+
+**流程隨「治理 profile」伸縮**（開跑首次問一次、每專案固定）——這是控制時間/token 成本的主鈕：
+- **lean**：驗證關合併成**單一 reviewer**（功能+資安+飄移一棒）、一致性折進 architect 自檢、UX 僅有可見面才跑。約 5 棒。
+- **standard**：QA 獨立 + reviewer 合併（資安+飄移）、有可見面才跑 UX+獨立一致性。
+- **max**：QA/資安/飄移全拆專家棒、UX+一致性一律保留。
+
+PM 在 S1 宣告「**階段計畫**」依 profile 定基準再微調（無可見面跳 UX+折一致性、碰敏感面拆獨立資安棒）。開發/驗證關/收尾/retro 永不跳過。
 
 ```
- ┌─────────────────────────── 一個 SPRINT ───────────────────────────┐
- 1. PM 規劃 ──► 2. UX 設計 ─┐
-                            ├─► 4. 一致性交叉檢查 (gate)
-              3. 技術設計 ──┘        │ CHANGES_REQUIRED → 退回 2/3
-                                     ▼ PASS
-                            5. 任務拆解 + 測試/安全需求
-                                     ▼
-                            6. 開發 ◄──────────────┐
-                                     ▼             │ FAIL/FINDINGS
-                            7. QA (gate) ──────────┤ 退回 6（上限3輪）
-                                     ▼ PASS        │
-                            8. 資安驗證 (gate) ────┤
-                                     ▼ PASS        │
-                            9. 飄移稽核 (gate) ────┘ DRIFT→退回/補ADR/記backlog
-                                     ▼ ALIGNED
-                            10. PM 收尾
-                                     ▼
-                            11. retro 回顧 ──► docs/LESSONS.md（自動累積）
-                                     │         docs/retro/（改善提案，待核可）
-                                     ▼
+ ┌────────────────────── 一個 SPRINT（standard 示意）──────────────────────┐
+ S1. PM 規劃 ──► S2. UX 設計 ─┐  (無可見面則跳過 S2，S4 折進 S3 自檢)
+                              ├─► S4. 一致性 gate ── CHANGES_REQUIRED → 退回
+   S3. 架構（設計+拆解 一棒）─┘        │                                (上限2輪)
+                                       ▼ PASS
+                            S5. 開發 ◄──────────────┐
+                                       ▼            │ CHANGES_REQUIRED
+              S6. 驗證關（形態依 profile）──────────┤ 退回 S5（窄context，上限3輪）
+                lean : reviewer(功能+資安+飄移)     │ 飄移→補ADR/記backlog
+                std  : QA ─► reviewer(資安+飄移)    │
+                max  : QA ─► security ─► drift ─────┘
+                                       ▼ PASS
+                            S7. PM 收尾（瘦身，只讀 VERDICT）
+                                       ▼
+                            S8. retro 回顧 ──► docs/LESSONS.md（自動累積）
+                                       │         docs/retro/（改善提案，待核可）
+                                       ▼
                               [HUMAN GATE] 摘要 + 待核可提案
- └────────────────────────────────────────────────────────────────────┘
-                                     ▼ 放行
-                              下一個 sprint (N+1)
+ └────────────────────────────────────────────────────────────────────────┘
+                                       ▼ 放行
+                                下一個 sprint (N+1)
               ▲ LESSONS.md 被下個 sprint 所有角色開工時讀取（學習回路）
 ```
 
 ## 角色與產物
 
-| 階段 | 角色 | 產物 | gate? |
-|------|------|------|-------|
-| 1  | pm                   | `sprints/sprint-N.md`（目標、驗收標準、DoD） | |
-| 2  | ux-designer          | `design/ux/sprint-N-ux.md` | |
-| 3  | architect            | `design/tech/sprint-N-tech.md` + ADR | |
-| 4  | consistency-reviewer | `design/review/sprint-N-consistency.md` | ✅ |
-| 5  | architect            | `sprints/sprint-N-tasks.md` | |
-| 6  | developer            | 程式碼 + `sprints/sprint-N-dev.md` | |
-| 7  | qa                   | `sprints/sprint-N-qa.md` | ✅ |
-| 8  | security             | `sprints/sprint-N-security.md` | ✅ |
-| 9  | drift-auditor        | `sprints/sprint-N-drift.md` | ✅ |
-| 10 | pm                   | 更新 backlog + sprint log 摘要 | |
-| 11 | retro                | `docs/LESSONS.md`(自動) + `docs/retro/sprint-N-retro.md`(提案) | 🧑 human |
+| 階段 | 角色 | 產物 | gate? | 跑在哪個 profile |
+|------|------|------|-------|------|
+| S1 | pm                   | `sprints/sprint-N.md`（目標、驗收標準、DoD、profile） | | 全部 |
+| S2 | ux-designer          | `design/ux/sprint-N-ux.md` | | 有可見面才跑 |
+| S3 | architect            | `design/tech/sprint-N-tech.md` + `sprints/sprint-N-tasks.md` + ADR（**一棒融合**） | | 全部 |
+| S4 | consistency-reviewer | `design/review/sprint-N-consistency.md` | ✅ | standard(有可見面)/max；lean 折進 S3 |
+| S5 | developer            | 程式碼 + `sprints/sprint-N-dev.md` | | 全部 |
+| S6 | **reviewer**（合併）  | `sprints/sprint-N-review.md` | ✅ | lean（全包）/ standard（資安+飄移） |
+| S6 | qa / security / drift-auditor | `-qa.md` / `-security.md` / `-drift.md` | ✅ | standard(QA)／max(全拆)／PM 標拆資安 |
+| S7 | pm                   | 更新 backlog + sprint log 摘要（瘦身，不重驗 AC） | | 全部 |
+| S8 | retro                | `docs/LESSONS.md`(自動) + `docs/retro/sprint-N-retro.md`(提案) | 🧑 human | 全部 |
 
 ## 設計理念
-- **驗收標準是客觀標尺**：PM 在階段1就把需求寫成可測條件，QA(7) 與飄移(9) 才有依據，不靠感覺。
-- **安全左移**：威脅模型在技術設計(3)就種下，資安(8)只是驗證覆蓋，不是末端補救。
-- **ADR 帳本**：架構決策被記錄，飄移稽核(9)能機械式對照，而非事後驚覺長歪。
+- **驗收標準是客觀標尺**：PM 在 S1 就把需求寫成可測條件，驗證關（功能/飄移）才有依據，不靠感覺。
+- **安全左移**：威脅模型在架構設計(S3)就種下，驗證關的資安區塊只是驗證覆蓋，不是末端補救。
+- **ADR 帳本**：架構決策被記錄，驗證關的飄移區塊能機械式對照，而非事後驚覺長歪。
 - **可追溯**：backlog id → sprint 項目 → 任務 → 驗收標準，一條線串到底。
 - **檔案即交接**：subagent 不共享記憶，`docs/` 是它們唯一的「會議記錄」。
-- **自我學習，分風險**：retro(11) 把可累積的教訓自動寫進 `LESSONS.md`（安全，全體下輪讀取）；改寫角色指令/流程則只「提案」到 `docs/retro/`，人類核可後才套用——避免機制自我退化或刪掉護欄。FRAMEWORK 級改善核可後回流到 dev-factory 源頭。
-- **治理在外、執行在內（與 superpowers 並存）**：dev-factory 自己是治理/編排層（sprint 劇本、gate、可追溯、自我學習）；各棒「內部怎麼做」則委派給 [superpowers](https://github.com/obra/superpowers) 的成熟紀律——developer 走 `test-driven-development`、architect 拆解用 `writing-plans`、qa/developer 用 `systematic-debugging`、explorer 用 `brainstorming`。orchestrator 永遠是唯一外層，superpowers 不接管派工/收尾。superpowers 為選用依賴（建議使用者層安裝），未裝時各 agent 有內嵌後備規則。
+- **成本隨風險伸縮（profile）**：lean/standard/max 讓小專案不必付全套儀式——合併 gate、融合架構棒、瘦身收尾都是為了砍掉「重複做同樣的事」與冷啟動重讀。安全護欄（TDD、資安 High 不放行、退回上限、報告落檔、retro 提案需核可）在每個 profile 都保留。
+- **自我學習，分風險**：retro(S8) 把可累積的教訓自動寫進 `LESSONS.md`（安全，全體下輪讀取）；改寫角色指令/流程則只「提案」到 `docs/retro/`，人類核可後才套用——避免機制自我退化或刪掉護欄。FRAMEWORK 級改善核可後回流到 dev-factory 源頭。
+- **治理在外、執行在內（與 superpowers 並存）**：dev-factory 自己是治理/編排層（sprint 劇本、gate、可追溯、自我學習）；各棒「內部怎麼做」則委派給 [superpowers](https://github.com/obra/superpowers) 的成熟紀律——developer 走 `test-driven-development`、architect 拆解用 `writing-plans`、qa/reviewer 用 `systematic-debugging`、explorer 用 `brainstorming`。orchestrator 永遠是唯一外層，superpowers 不接管派工/收尾。superpowers 為選用依賴（建議使用者層安裝），未裝時各 agent 有內嵌後備規則。
 
 ## 護欄
-- 每個修復迴圈有上限（一致性 2 輪、QA/資安各 3 輪）；各 gate 計數**獨立且不重置**，另有 **sprint 總修復預算 6 次**（任何 gate 的退回都累計）——達上限或預算即升級給使用者，防 gate 之間互彈空轉。
+- 每個修復迴圈有上限（一致性 2 輪、驗證關退回 3 輪）；各 gate 計數**獨立且不重置**，另有 **sprint 總修復預算 6 次**（任何 gate 的退回都累計）——達上限或預算即升級給使用者，防 gate 之間互彈空轉。
 - **狀態落地**：階段進度與所有迴圈計數記在 sprint 主檔的「執行狀態」區塊（orchestrator 每階段更新）；context 壓縮或中斷後以它為準續跑，不憑記憶。gate 報告第一行固定 `VERDICT: <判定>`，orchestrator 只讀判定與問題清單，控制 context 成本。
 - **分支隔離**：每個 sprint 在 `sprint-<N>` 分支上進行；合併回主分支由收尾 human gate 決定，orchestrator 不自行 merge。
 - 預設每個 sprint 收尾停下等放行；要連跑用 `/loop /sprint`。

@@ -69,7 +69,7 @@ copy_core() {
     fi
   done
   mv "$new_manifest" "$manifest"
-  echo "  ✓ agents → $claude_dir/agents/（建造 9 角 + discovery 3 角 explorer/critic/shaper）"
+  echo "  ✓ agents → $claude_dir/agents/（建造 10 角含合併驗證關 reviewer + discovery 3 角 explorer/critic/shaper）"
   echo "  ✓ skills → $claude_dir/skills/（/sprint 建造管線、/discovery 前置管線）"
 }
 
