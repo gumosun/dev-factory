@@ -19,7 +19,7 @@
 - **light**（預設）：現行行為——ux-designer 僅在有可見面時跑，產 markdown 規格。
 - **full**：`docs/design/design-system.md`（install 鋪的 Stripe 風預設，可整份換掉）成為 ux-designer/developer 的**硬約束**；開發後多一道 **S5.5 視覺關**——`visual-reviewer` 起專案、截圖、讀圖、對照設計系統批判，不過退回 developer。這是「沒有設計師也能有品味」的機制：品味 = 約束 + 回饋。
 - full 需要 PROJECT_GOAL 的「技術約束 → 預覽指令」（例 `npm run dev` port 3000），visual-reviewer 靠它起專案；沒填視覺關只能回 SKIPPED。
-若留空，`/sprint` 首次開跑會與 profile **同一次**問我。
+全新專案留空 → `/sprint` 首次開跑會與 profile **同一次**問我。**既有專案**（profile 早已設好、只是沒有這個新欄位）→ 逕用 `light` 往下跑（＝一直以來的行為，不會有任何改變），只在收尾摘要提醒我可以改 `full`，不為此中斷 sprint。
 
 ## 你的角色
 你是 orchestrator（主持人）。你**不親自**寫設計或程式碼，而是依 `/sprint` 劇本派 subagent。劇本隨 profile 伸縮，**standard** 的完整序列：
