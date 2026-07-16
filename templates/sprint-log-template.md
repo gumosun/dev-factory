@@ -18,17 +18,19 @@
 
 ## 階段計畫（PM 於 S1 宣告，orchestrator 依此裁剪）
 - 治理 profile：<lean / standard / max，取自 PROJECT_GOAL>
+- UX 強度：<light / full，取自 PROJECT_GOAL> —— full 且有可見面 → 跑 S5.5 視覺關
 - 使用者可見面（S2 UX + S4 一致性）：有 / 無 —— 理由：<無使用者可見介面/契約變更 → 略過 UX 且一致性折進架構自檢>
 - 本輪資安（S6 驗證關）：合併快掃 / 拆獨立棒＋完整 —— 理由：<碰 auth/金鑰/外部輸入/反序列化才需拆獨立棒>
 - 開發/驗證關/收尾/retro 一律執行
 
 ## 執行狀態（orchestrator 每完成一階段就更新；斷點續跑與迴圈計數的唯一真理來源）
-- 分支：`sprint-<N>`　profile：<lean/standard/max>
+- 分支：`sprint-<N>`　profile：<lean/standard/max>　UX 強度：<light/full>
 - [ ] S1 PM 規劃
 - [ ] S2 UX 設計（無可見面 → 跳過）
 - [ ] S3 架構（設計+拆解，一棒融合）
 - [ ] S4 一致性 gate（lean/無可見面 → 折進 S3 自檢，跳過）— 退回次數：0/2
 - [ ] S5 開發
+- [ ] S5.5 視覺關（UX 強度=light 或無可見面 → 跳過）— 退回次數：0/2
 - [ ] S6 驗證關 — 退回次數：0/3
       - profile 形態：lean=reviewer(功能+資安+飄移) / standard=QA+reviewer(資安+飄移) / max=QA+security+drift
 - [ ] S7 PM 收尾（瘦身）
