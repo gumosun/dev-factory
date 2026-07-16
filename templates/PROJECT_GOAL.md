@@ -8,6 +8,11 @@
 - **standard**：QA 獨立 + reviewer 合併資安/飄移、有可見面才跑 UX+一致性。多數正式專案。
 - **max**：QA/資安/飄移全拆專家棒、UX+一致性一律保留。高風險 / 上線 / 合規，最嚴最貴。
 
+## UX 強度
+<light / full —— 與治理 profile **正交**：profile 管 gate 嚴格度，這欄管 UX 深度。留空則 `/sprint` 首次開跑會與 profile 一起問你一次（每專案一次）。>
+- **light**（預設）：ux-designer 僅在有可見面時跑，產出 markdown 規格。無設計系統約束、無視覺關。純後端/CLI、或 UI 品質不是重點時用。
+- **full**：ux-designer / developer / visual-reviewer 三棒共讀 `docs/design/design-system.md` 當硬約束；開發後多一道 **S5.5 視覺關**（截圖 → 對照設計系統批判 → 退回修）。UI 品質是產品成敗關鍵時用。
+
 ## 一句話
 <這個專案要做出什麼？解決誰的什麼問題？>
 
@@ -24,6 +29,7 @@
 
 ## 技術約束 / 偏好
 - <語言、框架、部署環境、必須整合的服務、不能用的東西>
+- **預覽指令**：<UX 強度=full 且有 UI 時必填。visual-reviewer 靠它起專案截圖。例：`npm run dev`，port 3000。留空 → 視覺關會回 SKIPPED。>
 
 ## 已知風險 / 紅線
 - <法規、資安、商業上的限制>
