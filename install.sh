@@ -69,7 +69,7 @@ copy_core() {
     fi
   done
   mv "$new_manifest" "$manifest"
-  echo "  ✓ agents → $claude_dir/agents/（建造 10 角含合併驗證關 reviewer + discovery 3 角 explorer/critic/shaper）"
+  echo "  ✓ agents → $claude_dir/agents/（建造 11 角含合併驗證關 reviewer + 視覺關 visual-reviewer + discovery 3 角 explorer/critic/shaper）"
   echo "  ✓ skills → $claude_dir/skills/（/sprint 建造管線、/discovery 前置管線）"
 }
 
@@ -83,7 +83,7 @@ seed_project() {
     echo "  ✓ CLAUDE.md（orchestrator 契約）"
   fi
   # docs 骨架
-  mkdir -p "$proj/docs/sprints" "$proj/docs/design/ux" "$proj/docs/design/tech" \
+  mkdir -p "$proj/docs/sprints" "$proj/docs/design/ux/screenshots" "$proj/docs/design/tech" \
            "$proj/docs/design/adr" "$proj/docs/design/review" "$proj/docs/retro" \
            "$proj/docs/discovery"
   [ -f "$proj/docs/PROJECT_GOAL.md" ] || cp "$FACTORY_DIR/templates/PROJECT_GOAL.md" "$proj/docs/PROJECT_GOAL.md"
@@ -91,9 +91,11 @@ seed_project() {
   [ -f "$proj/docs/LESSONS.md" ]      || cp "$FACTORY_DIR/templates/LESSONS.md"      "$proj/docs/LESSONS.md"
   [ -f "$proj/docs/DIRECTION.md" ]    || cp "$FACTORY_DIR/templates/DIRECTION.md"    "$proj/docs/DIRECTION.md"
   [ -f "$proj/docs/discovery/rubric.md" ] || cp "$FACTORY_DIR/templates/discovery-rubric.md" "$proj/docs/discovery/rubric.md"
+  # 設計系統：使用者會整份換掉換 preset，重跑 install 不可覆蓋（與下面 ADR/sprint 範本的無條件 cp 不同，這是刻意的）
+  [ -f "$proj/docs/design/design-system.md" ] || cp "$FACTORY_DIR/templates/design-system.md" "$proj/docs/design/design-system.md"
   cp "$FACTORY_DIR/templates/adr-template.md"        "$proj/docs/design/adr/_TEMPLATE.md"
   cp "$FACTORY_DIR/templates/sprint-log-template.md" "$proj/docs/sprints/_TEMPLATE.md"
-  echo "  ✓ docs/ 骨架（PROJECT_GOAL、backlog、DIRECTION、discovery/rubric、範本）"
+  echo "  ✓ docs/ 骨架（PROJECT_GOAL、backlog、DIRECTION、discovery/rubric、design-system、範本）"
   # 建議權限 allowlist（減少自主連跑時被權限提示打斷）：不覆蓋既有 settings.json
   if [ ! -f "$proj/.claude/settings.json" ]; then
     mkdir -p "$proj/.claude"
