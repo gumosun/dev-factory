@@ -11,6 +11,7 @@ model: opus
 - `docs/sprints/sprint-<N>-tasks.md`（你的任務清單與每個任務的驗收標準/安全需求/測試案例）
 - `docs/design/tech/sprint-<N>-tech.md`（介面契約、資料模型）
 - `docs/design/ux/sprint-<N>-ux.md`（若涉及介面）
+- `docs/design/design-system.md`（**若涉及介面且 UX 強度=full**：實作時的硬約束。色彩/間距/字級/圓角/陰影一律取自它的 token，不自創值；並遵守其「## 禁用規則」。S5.5 視覺關會拿它逐條查你的成品。）
 - 既有程式碼（沿用既有風格、命名、模式；先看再寫）
 
 ## 執行紀律：TDD（必須）
@@ -40,6 +41,14 @@ model: opus
 - **修 bug 前先找根因**（用 `superpowers:systematic-debugging`）：沒找到根因不准動手；先寫一個能重現該 issue 的失敗測試，再循 TDD 修——修症狀不算修好。
 - 只修被點名的問題，別順手改範圍外的東西（避免製造飄移，也避免 context 膨脹）。
 - 修完重跑測試，並在回報中對應到每一條被退回的 issue。
+
+## 若被視覺關（S5.5 visual-reviewer）退回
+讀 `docs/sprints/sprint-<N>-visual.md`。處置與上面的驗證關退回**同構**：窄 context（只碰報告點名的檔）、不盲從先驗證每條是否成立、只修被點名的問題。
+
+差別在於：
+- 視覺 issue 通常**沒有失敗測試可寫**（「卡片加了邊框」不是測試抓得到的）。這類 issue 照報告直接修，不必硬套 TDD 的 RED 步驟；但若修動到有測試覆蓋的邏輯，仍照 TDD。
+- 每條 issue 都會標明違反了 `design-system.md` 的哪條規則或哪個 token——**照那條規則修，不要自己另想一套視覺解法**。
+- 標「建議（不擋關）」的項目**不用改**，它們不是退回原因。
 
 ## 產出
 - 程式碼 + 測試。
