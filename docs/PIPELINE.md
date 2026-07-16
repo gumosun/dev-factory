@@ -50,6 +50,8 @@
 - **standard**：QA 獨立 + reviewer 合併（資安+飄移）、有可見面才跑 UX+獨立一致性。
 - **max**：QA/資安/飄移全拆專家棒、UX+一致性一律保留。
 
+**另有正交的「UX 強度」開關**（light/full，同樣每專案問一次）：`full` 讓 `docs/design/design-system.md` 成為 UX/開發的硬約束，並在 S5 後加一道 **S5.5 視覺關**（截圖 → 對照設計系統批判 → 退回）。profile 管 gate 嚴格度，UX 強度管 UX 深度，兩者互不決定對方。
+
 PM 在 S1 宣告「**階段計畫**」依 profile 定基準再微調（無可見面跳 UX+折一致性、碰敏感面拆獨立資安棒）。開發/驗證關/收尾/retro 永不跳過。
 
 ```
@@ -59,7 +61,10 @@ PM 在 S1 宣告「**階段計畫**」依 profile 定基準再微調（無可見
    S3. 架構（設計+拆解 一棒）─┘        │                                (上限2輪)
                                        ▼ PASS
                             S5. 開發 ◄──────────────┐
-                                       ▼            │ CHANGES_REQUIRED
+                                       ▼            │
+                    S5.5 視覺關（UX 強度=full）─────┤ CHANGES_REQUIRED
+                     截圖→對照 design-system→批判   │ 退回 S5（窄context，上限2輪）
+                                       ▼ PASS/SKIPPED
               S6. 驗證關（形態依 profile）──────────┤ 退回 S5（窄context，上限3輪）
                 lean : reviewer(功能+資安+飄移)     │ 飄移→補ADR/記backlog
                 std  : QA ─► reviewer(資安+飄移)    │
@@ -86,6 +91,7 @@ PM 在 S1 宣告「**階段計畫**」依 profile 定基準再微調（無可見
 | S3 | architect            | `design/tech/sprint-N-tech.md` + `sprints/sprint-N-tasks.md` + ADR（**一棒融合**） | | 全部 |
 | S4 | consistency-reviewer | `design/review/sprint-N-consistency.md` | ✅ | standard(有可見面)/max；lean 折進 S3 |
 | S5 | developer            | 程式碼 + `sprints/sprint-N-dev.md` | | 全部 |
+| S5.5 | **visual-reviewer** | `sprints/sprint-N-visual.md` + `design/ux/screenshots/sprint-N/` | ✅ | UX 強度=`full` 且有可見面 |
 | S6 | **reviewer**（合併）  | `sprints/sprint-N-review.md` | ✅ | lean（全包）/ standard（資安+飄移） |
 | S6 | qa / security / drift-auditor | `-qa.md` / `-security.md` / `-drift.md` | ✅ | standard(QA)／max(全拆)／PM 標拆資安 |
 | S7 | pm                   | 更新 backlog + sprint log 摘要（瘦身，不重驗 AC） | | 全部 |
@@ -99,6 +105,7 @@ PM 在 S1 宣告「**階段計畫**」依 profile 定基準再微調（無可見
 - **檔案即交接**：subagent 不共享記憶，`docs/` 是它們唯一的「會議記錄」。
 - **成本隨風險伸縮（profile）**：lean/standard/max 讓小專案不必付全套儀式——合併 gate、融合架構棒、瘦身收尾都是為了砍掉「重複做同樣的事」與冷啟動重讀。安全護欄（TDD、資安 High 不放行、退回上限、報告落檔、retro 提案需核可）在每個 profile 都保留。
 - **自我學習，分風險**：retro(S8) 把可累積的教訓自動寫進 `LESSONS.md`（安全，全體下輪讀取）；改寫角色指令/流程則只「提案」到 `docs/retro/`，人類核可後才套用——避免機制自我退化或刪掉護欄。FRAMEWORK 級改善核可後回流到 dev-factory 源頭。
+- **品味 = 約束 + 回饋，不是 prompt**：沒有設計師時，`design-system.md` 就是設計師——它是 UI 工作的**輸入約束**（ux-designer 只能用既有 token、developer 照 token 實作），不是事後檢查表。而 S5.5 視覺關是整條管線裡**唯一真的看過成品**的一棒：其他角色都只讀得到文字，只有它能發現「規格說適當間距、實際擠成一團」。兩者缺一不可——研究顯示有視覺 critic 的迭代帶來 +17.8% 品質，沒 critic 的純重新生成只有 +1.5%。
 - **治理在外、執行在內（與 superpowers 並存）**：dev-factory 自己是治理/編排層（sprint 劇本、gate、可追溯、自我學習）；各棒「內部怎麼做」則委派給 [superpowers](https://github.com/obra/superpowers) 的成熟紀律——developer 走 `test-driven-development`、architect 拆解用 `writing-plans`、qa/reviewer 用 `systematic-debugging`、explorer 用 `brainstorming`。orchestrator 永遠是唯一外層，superpowers 不接管派工/收尾。superpowers 為選用依賴（建議使用者層安裝），未裝時各 agent 有內嵌後備規則。
 
 ## 護欄
