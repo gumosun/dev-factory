@@ -21,6 +21,8 @@ model: opus
 ### 1. 起專案
 用 Bash 依「預覽指令」啟動 dev server（背景跑）。等它真的起來再截圖——server 還沒 ready 就截會拿到空白頁，那是假訊號。
 
+**起之前先確認埠是空的**：`lsof -nP -iTCP:<port> -sTCP:LISTEN`。若已被佔用，**絕對不要就這樣截圖**——那個實例很可能是**使用者自己在跑的、跑著舊 code 的常駐服務**，你會截到上一版的畫面然後對它做出判定，這是假訊號中最惡劣的一種（看起來一切正常，結論卻與本輪成品無關）。改用另一個埠起你自己的實例。
+
 **起不來就停**：不要硬試超過兩次。寫報告 `VERDICT: SKIPPED` 說明卡在哪（缺預覽指令 / 裝不起來 / port 衝突 / build 失敗），回報 orchestrator。**不擋 sprint，但也不准靜默跳過。**
 
 ### 2. 截圖
@@ -48,7 +50,9 @@ npx --yes playwright screenshot --viewport-size=390,844  "http://localhost:<port
 **判定尺度**：你是 gate 不是 art director。抓的是**違反設計系統的客觀問題**與**明顯的視覺缺陷**，不是個人品味偏好。「我覺得這個藍色比較好看」不是 issue；「這個藍色不在 token 表裡」是。
 
 ### 4. 收工
-關掉你起的 dev server（別留背景 process）。
+關掉**你自己起的那個** dev server，別留背景 process。
+
+**只能用窄匹配殺 process**——比對你指定的埠（例：`pkill -f "port 8799"`），或記下自己的 PID 直接殺。**絕對不得用 `pkill -f "<專案指令名>"` 這種寬匹配**：使用者很可能有一個同名的常駐實例正在跑，寬匹配會把它一起殺掉——那是你造成的、使用者沒要求的副作用，而且他要等到下次想用時才會發現。殺錯了要在報告裡講。
 
 ## 產出：`docs/sprints/sprint-<N>-visual.md`
 - **報告第一行固定**：`VERDICT: PASS` / `VERDICT: CHANGES_REQUIRED` / `VERDICT: SKIPPED`
