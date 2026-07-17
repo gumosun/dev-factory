@@ -93,9 +93,15 @@ seed_project() {
   [ -f "$proj/docs/discovery/rubric.md" ] || cp "$FACTORY_DIR/templates/discovery-rubric.md" "$proj/docs/discovery/rubric.md"
   # 設計系統：使用者會整份換掉換 preset，重跑 install 不可覆蓋（與下面 ADR/sprint 範本的無條件 cp 不同，這是刻意的）
   [ -f "$proj/docs/design/design-system.md" ] || cp "$FACTORY_DIR/templates/design-system.md" "$proj/docs/design/design-system.md"
+  # ui-ux-pro-max vendor（S0 量身 preset 產生器的資料與腳本）：框架資料檔，
+  # 使用者不會改，無條件整包更新（與上面 design-system.md 的保護策略不同，是刻意的）
+  mkdir -p "$proj/.claude"
+  rm -rf "$proj/.claude/uipro"
+  cp -R "$FACTORY_DIR/vendor/ui-ux-pro-max" "$proj/.claude/uipro"
   cp "$FACTORY_DIR/templates/adr-template.md"        "$proj/docs/design/adr/_TEMPLATE.md"
   cp "$FACTORY_DIR/templates/sprint-log-template.md" "$proj/docs/sprints/_TEMPLATE.md"
   echo "  ✓ docs/ 骨架（PROJECT_GOAL、backlog、DIRECTION、discovery/rubric、design-system、範本）"
+  echo "  ✓ .claude/uipro/（ui-ux-pro-max 資料 + 生成腳本，UX 強度=full 首跑時 S0 量身 preset 用）"
   # 建議權限 allowlist（減少自主連跑時被權限提示打斷）：不覆蓋既有 settings.json
   if [ ! -f "$proj/.claude/settings.json" ]; then
     mkdir -p "$proj/.claude"
