@@ -17,7 +17,7 @@
 ## UX 強度（決定 UI 品質深度，每專案問一次）
 `docs/PROJECT_GOAL.md` 另有一個「UX 強度」欄位，**與治理 profile 正交**（profile 管 gate 嚴格度，這欄管 UX 深度）：
 - **light**（預設）：現行行為——ux-designer 僅在有可見面時跑，產 markdown 規格。
-- **full**：`docs/design/design-system.md`（install 鋪的 Stripe 風預設，可整份換掉）成為 ux-designer/developer 的**硬約束**；開發後多一道 **S5.5 視覺關**——`visual-reviewer` 起專案、截圖、讀圖、對照設計系統批判，不過退回 developer。這是「沒有設計師也能有品味」的機制：品味 = 約束 + 回饋。
+- **full**：`docs/design/design-system.md`（install 鋪的 Stripe 風預設，可整份換掉）成為 ux-designer/developer 的**硬約束**；開發後多一道 **S5.5 視覺關**——`visual-reviewer` 起專案、截圖、讀圖、對照設計系統批判，不過退回 developer。這是「沒有設計師也能有品味」的機制：品味 = 約束 + 回饋。首次以 full 開跑且 design-system.md 仍是出廠預設（首行有 `<!-- dev-factory-default-preset -->` marker）時，會先插一棒 S0：ux-designer 用內建的 ui-ux-pro-max 資料庫（`.claude/uipro/`）依產品類型生成量身 preset，之後才進正常管線。
 - full 需要 PROJECT_GOAL 的「技術約束 → 預覽指令」（例 `npm run dev` port 3000），visual-reviewer 靠它起專案；沒填視覺關只能回 SKIPPED。
 全新專案留空 → `/sprint` 首次開跑會與 profile **同一次**問我。**既有專案**（profile 早已設好、只是沒有這個新欄位）→ 逕用 `light` 往下跑（＝一直以來的行為，不會有任何改變），只在收尾摘要提醒我可以改 `full`，不為此中斷 sprint。
 
