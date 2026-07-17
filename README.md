@@ -17,6 +17,12 @@ Coding agents are great at *writing code* and bad at *being a team*: they skip d
 - **File-based handoffs** — subagents share no memory; `docs/` is the single source of truth, so every decision is traceable from backlog item → sprint → task → acceptance criteria
 - **Self-learning** — every sprint ends with a retro; lessons accumulate automatically in `LESSONS.md` (read by all roles next sprint), while process changes require human approval — so the framework improves without degrading its own guardrails
 
+## What a gate bounce looks like in practice
+
+Real, unedited handoff artifacts from sprint 31 of a 31-sprint production run — the PM spec declares the design system a hard constraint, the visual gate screenshots the live app, bounces one blocking issue back to the developer with narrow context, re-verifies, and passes; the retro's lessons feed every role's next sprint:
+
+![Real handoff artifacts: spec → visual gate bounce → institutional memory](docs/assets/handoff-artifacts.png)
+
 ## Two pipelines
 
 ```mermaid
