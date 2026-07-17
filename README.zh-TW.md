@@ -105,6 +105,10 @@ dev-factory/
 - **想換各角色的模型** → 改 agent frontmatter 的 `model:`
 - **調「多自主 / 多停下問你」** → 改 `templates/CLAUDE.md` 的「自主邊界」段
 
+## 致謝
+
+各角色的執行紀律委派給 [superpowers](https://github.com/obra/superpowers)（@obra，MIT）——它是**選用、另行安裝的外部依賴**，本 repo 不內含任何 superpowers 程式碼。dev-factory 本身是其上的治理/編排層。
+
 ## License
 
 [MIT](LICENSE)

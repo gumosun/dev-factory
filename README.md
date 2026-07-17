@@ -131,6 +131,10 @@ Full rationale and per-stage tables: [docs/PIPELINE.md](docs/PIPELINE.md).
 - **Different models per role** → edit `model:` in each agent's frontmatter
 - **More/less autonomy** → edit the "autonomy boundary" section in `templates/CLAUDE.md`
 
+## Acknowledgements
+
+Per-role execution discipline is delegated to [superpowers](https://github.com/obra/superpowers) by @obra (MIT) as an **optional, separately-installed dependency** — no superpowers code is bundled in this repo. dev-factory itself is the governance/orchestration layer on top.
+
 ## License
 
 [MIT](LICENSE)
