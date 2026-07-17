@@ -1,3 +1,4 @@
+<!-- dev-factory-default-preset -->
 # 設計系統（Design System）
 
 > **這是 dev-factory 鋪進來的「預設品味」——Stripe 風。它是 UI 工作的輸入約束，不是建議。**
@@ -108,3 +109,9 @@
 8. **對比度**：正文對背景至少 4.5:1，大字至少 3:1（WCAG AA）。
 9. **`--color-accent` 不用於一般 UI 元件**，只做漸層搭配與圖表點綴。
 10. **不要擠。** 區塊間距低於 `--space-7` 通常是錯的——慷慨留白是這套 preset 的識別特徵。
+11. **emoji 不得當結構性圖示**（導覽、按鈕、狀態指示、清單項目符號）。用同一家族的 SVG 圖示（lucide / heroicons / phosphor 擇一）；同一層級不得混用 filled 與 outline，筆畫粗細須一致。
+12. **hover / pressed 態不得造成版面位移。** 回饋用 color / opacity / shadow / transform 表達，不得改變元素的 layout bounds（hover 時改 border 寬、字重、尺寸都是錯的）。
+13. **未經 PROJECT_GOAL 定調，不得使用「AI 紫粉漸層」類配色。** 紫→粉大面積漸層是 generic AI 產出的廉價感標誌；漸層只能由本檔 token 表的色彩構成。
+14. **可點擊元素必有 `cursor: pointer` 與 hover 回饋。** 看起來能點但毫無反應的元素是錯的。
+
+> 規則 11–14 是**通用 anti-slop 條款**，與 preset 風格無關：整份換 preset 或由 S0 生成量身版本時，這四條必須原樣保留。
