@@ -109,6 +109,7 @@ dev-factory/
 ├── skills/sprint/    build orchestrator (/sprint playbook)
 ├── skills/discovery/ front-end orchestrator (/discovery playbook)
 ├── templates/        CLAUDE.md contract + goal/backlog/lessons/ADR/design-system seeds
+├── vendor/ui-ux-pro-max/  vendored design database + generator scripts (MIT; seeded into each project's .claude/uipro/ for the one-time S0 tailored-preset step)
 ├── docs/PIPELINE.md  full flow diagrams and design rationale
 └── install.sh        installer
 ```
@@ -131,9 +132,18 @@ Full rationale and per-stage tables: [docs/PIPELINE.md](docs/PIPELINE.md).
 - **Different models per role** → edit `model:` in each agent's frontmatter
 - **More/less autonomy** → edit the "autonomy boundary" section in `templates/CLAUDE.md`
 
+### Upgrading existing projects to a tailored preset
+
+install.sh never overwrites an existing `docs/design/design-system.md`. Two upgrade paths:
+
+1. **Anti-slop rules only**: manually copy rules 11–14 (emoji icons, hover layout shift, AI purple-pink gradients, cursor: pointer) from `templates/design-system.md` into your project's design-system.md.
+2. **Tailored preset**: reset your project's design-system.md to the factory template (with the first-line `<!-- dev-factory-default-preset -->` marker); the next full-intensity sprint's S0 step regenerates it from PROJECT_GOAL.
+
 ## Acknowledgements
 
 Per-role execution discipline is delegated to [superpowers](https://github.com/obra/superpowers) by @obra (MIT) as an **optional, separately-installed dependency** — no superpowers code is bundled in this repo. dev-factory itself is the governance/orchestration layer on top.
+
+The design database and generator scripts behind the S0 tailored-preset step come from [ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (MIT) — this part **is vendored** under `vendor/ui-ux-pro-max/` (with its LICENSE and source/version notes; see that folder's README).
 
 ## License
 

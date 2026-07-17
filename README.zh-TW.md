@@ -83,6 +83,7 @@ dev-factory/
 ├── skills/sprint/    建造 orchestrator（/sprint 劇本）
 ├── skills/discovery/ 前置 orchestrator（/discovery 劇本）
 ├── templates/        CLAUDE.md 契約 + 目標/backlog/教訓/ADR/設計系統範本
+├── vendor/ui-ux-pro-max/  vendored 設計資料庫 + 生成腳本（MIT；鋪到專案 .claude/uipro/，S0 量身 preset 用）
 ├── docs/PIPELINE.md  完整流程圖與設計理念
 └── install.sh        安裝器
 ```
@@ -105,9 +106,18 @@ dev-factory/
 - **想換各角色的模型** → 改 agent frontmatter 的 `model:`
 - **調「多自主 / 多停下問你」** → 改 `templates/CLAUDE.md` 的「自主邊界」段
 
+### 既有專案升級到量身 preset
+
+install.sh 不會覆蓋你專案裡的 `docs/design/design-system.md`。舊專案要吃到新東西有兩條路：
+
+1. **只要 anti-slop 規則**：把 `templates/design-system.md` 禁用規則 11–14（emoji 圖示、hover 位移、AI 紫粉漸層、cursor: pointer）手動貼進你專案的 design-system.md。
+2. **要量身 preset**：把你專案的 design-system.md 重置為出廠模板（含首行 `<!-- dev-factory-default-preset -->` marker），下次以 UX 強度=full 開跑時 S0 會依 PROJECT_GOAL 重新生成。
+
 ## 致謝
 
 各角色的執行紀律委派給 [superpowers](https://github.com/obra/superpowers)（@obra，MIT）——它是**選用、另行安裝的外部依賴**，本 repo 不內含任何 superpowers 程式碼。dev-factory 本身是其上的治理/編排層。
+
+S0 量身 preset 的設計資料庫與生成腳本來自 [ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)（MIT）——這部分**以 MIT 授權 vendor 在 `vendor/ui-ux-pro-max/`**（含 LICENSE 與來源/版本註記，見該目錄 README）。
 
 ## License
 
