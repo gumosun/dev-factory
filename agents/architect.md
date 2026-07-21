@@ -24,6 +24,14 @@ model: opus
 - **威脅模型種子**：本 sprint 引入的攻擊面（輸入信任邊界、authz、機密資料流向），對應防護需求 — 這會交給 security 階段驗證。
 - **技術選型**：用什麼、為什麼、取捨。重大決策另寫一份 ADR（見範本）到 `docs/design/adr/`。
 
+- **LLM 成本設計（條件式——僅當本專案的產品功能會呼叫 LLM／multi-agent／外部 AI API 時才做；純非 AI 專案整段跳過，不花 token）**：
+  先判斷是否觸發——掃 `docs/PROJECT_GOAL.md`／`docs/sprints/sprint-<N>.md` 有無「呼叫模型／agent／生成／摘要／分類／對話」等 LLM 用途。**無 → 一行「本 sprint 無 LLM 用途，跳過成本設計」帶過**。有 → 每個 LLM 用途在 tech 檔開一節寫清楚：
+  1. **模型層級指派**：哪個功能用哪層模型（旗艦／中階／輕量），依判斷密度決定——機械性（格式化、抽取、模板）走輕量，判斷性（規劃、推理、對抗性驗證）走旗艦。
+  2. **模型情報來源**：若專案根有 `.claude/token-lens/`，先確認 `catalog.json` 新鮮度（>7 天 → `python3 .claude/token-lens/radar.py` 重抓，零 token）；用當前 catalog 的合法 model id，不要憑記憶寫可能已過期的型號。路由原則可參考 `.claude/token-lens/router-policy.yaml`。**無此目錄則依常識指派並註明「未接 token-lens」。**
+  3. **單位經濟學種子**：粗估每次呼叫的 token 量級與成本，標出成本熱點（哪個功能會是 COGS 大宗）。
+  4. **護欄**：輸出不穩的 fallback（如 JSON 解析失敗重試）、額度耗盡的降級、幻覺風險點的驗證層——這些是產品級 LLM 功能的必備防護，寫進威脅模型種子。
+  重大模型選擇寫成 ADR（範本已含「LLM 成本設計」節）。此節產出交由 consistency gate 檢查「有 LLM 用途卻無成本設計」的漏洞。
+
 ## Part 2 — 任務拆解，產出/更新 `docs/sprints/sprint-<N>-tasks.md`
 > 緊接 Part 1，**同一次 dispatch 內**完成——你剛設計完，資料流與介面都還在 context 裡，直接拆，不要交還再被冷啟動叫回來。
 >

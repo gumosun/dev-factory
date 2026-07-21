@@ -65,6 +65,21 @@ Two orthogonal knobs, asked once per project:
 | **Governance profile** | `lean` / `standard` / `max` | How many gates run — `lean` merges verification into a single reviewer (~5 handoffs), `max` splits QA/security/drift into specialist passes. Safety rails (TDD, no-pass on High security findings, loop caps) survive every profile. |
 | **UX intensity** | `light` / `full` | `full` makes `design-system.md` a *hard constraint* (agents may only use existing tokens) and adds the S5.5 visual gate — the only role in the pipeline that actually *sees* the rendered product. Taste = constraints + feedback, not "please make it pretty" in a prompt. |
 
+## Cost observability & self-learning routing: token-lens (optional)
+
+Everyone runs on AI; almost nobody manages token ROI. dev-factory ships an **optional** observability-and-governance layer, `token-lens`, mounted outside the flow — **observability separated from execution, changes gated on human approval**, zero extra tokens on non-AI projects:
+
+| Module | Mount | What it does | Token cost |
+|--------|-------|--------------|-----------|
+| **Ledger** | retro (conditional) | Parses session logs; attributes cost + a quality proxy (tool-error rate) to project / model / role | Parsing is free; an agent only interprets when a number breaches a threshold |
+| **Router** | architect (conditional) | Routes work to a model tier by task × criticality; a versioned policy file is the source of truth, cold cells fall back to a Radar prior | Skipped entirely on non-LLM work |
+| **Radar** | called by Router | Pulls model/pricing docs + cross-model intel (price/quality/speed) so routing uses current model ids and objective priors | curl script, zero tokens |
+| **retro_optimize** (learning engine) | retro (conditional) | Turns each sprint's cost×quality into champion/challenger promotion proposals (Pareto rule + criticality hard-floor); **promotions stay human-approved — the engine never edits the policy itself** | Parsing free; interpret only when triggered |
+
+**The self-learning loop:** Radar intel (read-only) → recommendation table (decision SoR) → Router dispatch by task × criticality → sprint run → retro evaluation (three triggers: quality↑ upgrade / cost↑ downgrade / Radar opportunity) → Pareto + hard-floor → **human gate** ↺ write back to the table. Structurally it's the champion/challenger + canary + holdout loop an ad platform runs to optimize creatives/bids — with model selection as the thing being optimized. Downgrade proposals must carry quality-proxy evidence: **cheaper only if quality holds**.
+
+> `token-lens` is also a **standalone, independently-demoable repo** (the full project — 22 unit tests and an `report.html` visual report — lives in its own repo). What ships here under `vendor/token-lens/` is the runtime snapshot seeded into each project; see `vendor/token-lens/UPSTREAM.md` (refresh with `sync-from-upstream.sh`).
+
 ## Quick start
 
 ```bash
@@ -110,6 +125,7 @@ dev-factory/
 ├── skills/discovery/ front-end orchestrator (/discovery playbook)
 ├── templates/        CLAUDE.md contract + goal/backlog/lessons/ADR/design-system seeds
 ├── vendor/ui-ux-pro-max/  vendored design database + generator scripts (MIT; seeded into each project's .claude/uipro/ for the one-time S0 tailored-preset step)
+├── vendor/token-lens/     optional cost-observability + self-learning routing layer (ledger/quality/radar/router/retro_optimize + policy/intel; seeded into .claude/token-lens/; runtime snapshot of a standalone repo)
 ├── docs/PIPELINE.md  full flow diagrams and design rationale
 └── install.sh        installer
 ```

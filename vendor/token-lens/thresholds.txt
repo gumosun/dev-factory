@@ -1,0 +1,5 @@
+# token-lens 成本回顧觸發門檻(retro 讀此檔;可調)
+# 未超標時 retro 只記一行數字、不花 token 判讀。
+sprint_cost_usd=3.0
+role_tool_error_pct=8.0
+catalog_stale_days=7

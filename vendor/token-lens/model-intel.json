@@ -1,0 +1,15 @@
+{
+ "as_of": "2026-07-21",
+ "sources": [
+  "https://llm-stats.com/",
+  "https://artificialanalysis.ai/models",
+  "provider pricing pages (價格權威來源)"
+ ],
+ "note": "Radar 的跨模型客觀情報層。price_* 為供應商定價(權威、硬約束);quality_prior 與 speed_tps 是擷取自 llm-stats / artificialanalysis 的『策展快照』——通用 benchmark,僅供冷啟動先驗與候選圈選,不作任務品質裁決(任務品質由自己的 gate/工具錯誤率決定)。price 為 0.3*in+0.7*out 的混合單價,供比較用。[v0:外部 benchmark 為快照,待 radar.py 定期刷新;外部廠商列為擴充點]",
+ "models": [
+  {"model": "haiku",  "price_in": 1.0,  "price_out": 5.0,  "price": 3.8,  "quality_prior": 0.78, "speed_tps": 135, "context": 200000},
+  {"model": "sonnet", "price_in": 3.0,  "price_out": 15.0, "price": 11.4, "quality_prior": 0.90, "speed_tps": 90,  "context": 200000},
+  {"model": "opus",   "price_in": 5.0,  "price_out": 25.0, "price": 19.0, "quality_prior": 0.95, "speed_tps": 70,  "context": 200000},
+  {"model": "fable",  "price_in": 10.0, "price_out": 50.0, "price": 38.0, "quality_prior": 0.97, "speed_tps": 55,  "context": 200000}
+ ]
+}

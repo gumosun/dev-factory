@@ -1,0 +1,110 @@
+# token-lens Router Policy v1 (2026-07-20)
+# 路由單位 = 角色 × 任務型態。政策是方向盤:改這裡,用 apply_policy.py 套用到專案。
+# 品質 oracle = dev-factory 既有 gate(QA/一致性/飄移)。
+# 鐵則:降層後 gate 通過率不降、退回迴圈不增,省幅才算數。
+#
+# 證據等級: [實測] 自然實驗數據  [推定] 定價差推算,待 A/B  [保留] 品質優先不動
+
+meta:
+  eval_protocol: |
+    A/B 實驗: 同一 backlog 項目跑兩次(baseline policy vs candidate policy),
+    比較: (1) gate 一次通過率 (2) 退回迴圈數 (3) 工具錯誤率 (4) token 成本 (5) 完工時間。
+    通過條件: (1)(2)(3) 不劣於 baseline,(4) 顯著下降。
+  natural_experiment: |
+    回溯數據(2026-06~07, 全量 transcripts):
+    developer@Sonnet 工具錯誤率 1.9% (n=5,949) vs developer@Opus 3.3% (n=642)
+    → 常規實作降層至 Sonnet 不劣化品質代理指標。[實測]
+
+roles:
+  developer:
+    model: sonnet          # [實測] 錯誤率 1.9% 優於 Opus 3.3%
+    effort: high
+    mechanical_substeps:   # [推定] 待 A/B:格式化/模板填充/檔案搬運再降一層
+      model: haiku
+      effort: low
+  qa:
+    model: sonnet          # [實測] 錯誤率 2.2% (n=1,255),維持
+    effort: high
+    escalate_on_fail:      # 兩段式:初篩不過才升層深查
+      model: opus
+      effort: xhigh
+  consistency-reviewer:
+    model: opus            # ⚠️ 錯誤率異常 26.3%,先查原因再談降層(可能是探測式檢查的預期失敗,也可能是真摩擦)
+    effort: high
+    action_item: investigate_error_rate
+  architect:
+    model: opus            # [保留] 判斷密度最高,品質優先
+    effort: xhigh
+  pm:
+    model: sonnet          # [實測] 2.0% (n=592)
+    effort: high
+  ux-designer:
+    model: sonnet
+    effort: high
+    action_item: investigate_error_rate   # 14.9% 異常,查明前不動
+  drift-auditor:
+    model: opus            # [保留] 誤放行的代價 >> token 價差
+    effort: high
+  visual-reviewer:
+    model: sonnet          # [推定] 待 A/B:3.5%@Opus,判斷密度中等
+    effort: high
+  retro:
+    model: sonnet          # [推定] 待 A/B:總結性工作,判斷密度低
+    effort: high
+  security:
+    model: opus            # [保留] 誤放行代價高
+    effort: xhigh
+  critic:                  # discovery 的證據驗證
+    model: opus
+    effort: xhigh
+  explorer:                # discovery 的發散
+    model: sonnet
+    effort: high
+
+interactive_sessions:      # main(人機互動)不受 agent 政策管——用習慣約束
+  guidance: |
+    Fable/Opus 佔 main 支出 9 成。互動工作按任務選層:
+    問答/查資料 → Sonnet;深度分析/寫作/難題 → Opus;最難的推理 → Fable。
+    每訊息成本 Fable $0.55 / Opus $0.15 / Sonnet $0.08。
+
+# ── v2 (2026-07-21):分群鍵升級為「任務 × criticality」──────────────────
+# 角色只是報表標籤;決定 model 的是「工作本身多難 × 錯了多痛」。
+# criticality 設一條品質硬地板:高關鍵性禁止拿品質換成本(evaluate() 會強制)。
+criticality:
+  low:    { quality_floor: 0.55, allow_downgrade: true }   # 錯了無所謂 → 大膽降層
+  medium: { quality_floor: 0.75, allow_downgrade: true }
+  high:   { quality_floor: 0.90, allow_downgrade: false }  # 金流/資安/對外可見 → 硬地板
+# dev-factory 訊號 → criticality 對應(接 sprint 層現成旗標,不必新增欄位):
+#   本輪資安=拆獨立棒 或 使用者可見面=有 或 profile=max  → high
+#   profile=standard                                      → medium
+#   profile=lean / 純內部工具                              → low
+
+# routes:機器可讀的建議表(router.py 讀此段;由 retro_optimize 晉升提案經人類核可後更新)
+routes:
+  - key: docs:low
+    model: haiku
+    effort: low
+  - key: docs:medium
+    model: sonnet
+    effort: high
+  - key: code:medium
+    model: sonnet          # [實測] 錯誤率 1.9% 優於 Opus 3.3%
+    effort: high
+  - key: code:high
+    model: opus            # 動到核心/介面契約,誤放代價高
+    effort: xhigh
+  - key: review:medium
+    model: sonnet
+    effort: high
+  - key: review:high
+    model: opus
+    effort: xhigh
+  - key: design:high
+    model: opus            # [保留] 判斷密度最高,品質優先
+    effort: xhigh
+  - key: verify:medium
+    model: sonnet
+    effort: high
+  - key: verify:high
+    model: opus            # [保留] 飄移/資安誤放行 >> token 價差
+    effort: high

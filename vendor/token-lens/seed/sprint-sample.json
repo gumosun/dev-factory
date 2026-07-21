@@ -1,0 +1,18 @@
+{
+ "_note": "種子資料:一輪 sprint 的每格(角色×任務×criticality)成本與品質代理。用來示範 retro_optimize 引擎會動——真實運行時這份由 out/ledger.json + out/quality.json join 而來。cost=該格本輪花費(USD),error_rate=工具錯誤率(品質代理)。",
+ "sprint": "sample-01",
+ "cells": [
+  {"key": "developer:docs:low",  "model": "haiku", "cost": 0.8, "error_rate": 0.03, "n": 400, "criticality": "low"},
+
+  {"key": "developer:code:medium", "model": "opus", "cost": 5.2, "error_rate": 0.02, "n": 600, "criticality": "medium"},
+
+  {"key": "qa:review:medium", "model": "opus", "cost": 4.5, "error_rate": 0.033, "n": 600, "criticality": "medium",
+   "challenger": {"model": "sonnet", "cost": 2.4, "error_rate": 0.019, "n": 550}},
+
+  {"key": "security:verify:high", "model": "opus", "cost": 4.0, "error_rate": 0.02, "n": 500, "criticality": "high",
+   "challenger": {"model": "sonnet", "cost": 2.1, "error_rate": 0.05, "n": 500}},
+
+  {"key": "pm:docs:medium", "model": "opus", "cost": 3.5, "error_rate": 0.02, "n": 600, "criticality": "medium",
+   "challenger": {"model": "haiku", "cost": 0.9, "error_rate": 0.04, "n": 30}}
+ ]
+}

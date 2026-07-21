@@ -98,6 +98,13 @@ seed_project() {
   mkdir -p "$proj/.claude"
   rm -rf "$proj/.claude/uipro"
   cp -R "$FACTORY_DIR/vendor/ui-ux-pro-max" "$proj/.claude/uipro"
+  # token-lens vendor（可選成本觀測層）：零 token 的 Python 腳本，retro/architect 條件式呼叫；
+  # 框架資料檔、使用者不改，無條件整包更新。thresholds.txt 若使用者調過則保留。
+  if [ -d "$FACTORY_DIR/vendor/token-lens" ]; then
+    rm -rf "$proj/.claude/token-lens"
+    cp -R "$FACTORY_DIR/vendor/token-lens" "$proj/.claude/token-lens"
+    echo "  ✓ .claude/token-lens/（成本觀測＋自我學習路由層：ledger/quality/radar/router/retro_optimize，retro 與 architect 條件式呼叫）"
+  fi
   cp "$FACTORY_DIR/templates/adr-template.md"        "$proj/docs/design/adr/_TEMPLATE.md"
   cp "$FACTORY_DIR/templates/sprint-log-template.md" "$proj/docs/sprints/_TEMPLATE.md"
   echo "  ✓ docs/ 骨架（PROJECT_GOAL、backlog、DIRECTION、discovery/rubric、design-system、範本）"
