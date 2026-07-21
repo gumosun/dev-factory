@@ -44,5 +44,14 @@ model: sonnet
 ### 第3層 — 需要實作的改善 → backlog
 若改善本身是一塊工作（例如「補一套整合測試骨架」），標記交給 PM 記進 `docs/backlog.md`。
 
+## Token 成本回顧（條件式——量測永遠做、判讀才花 token）
+> 只在專案根有 `.claude/token-lens/` 時啟用；沒有則整段跳過。設計原則：解析腳本是零 token 的 Python，讓它先算；只有數字超過門檻，才動用你（agent）去判讀與寫建議——非 AI／低成本專案不會產生任何額外 token 開銷。
+
+1. **永遠做（零 token）**：`python3 .claude/token-lens/ledger.py --project auto` 取本專案本輪成本與各角色/模型用量；把「本 sprint 成本 $X、cache 命中率 Y%、工具錯誤率 Z%」一行寫進 retro 檔存查。
+2. **門檻判定**：讀 `.claude/token-lens/thresholds.txt`（若無則用預設：單 sprint 成本 > $3、或任一角色工具錯誤率 > 8%）。**未超標 → 到此為止，不再花 token。**
+3. **超標才判讀（花 token）**：只針對超標項分析——是哪個角色/模型層貴或錯得多？是任務組成問題還是模型層不對？把可累積的優化教訓（如「developer 常規實作降 Sonnet 錯誤率不升」）寫進第1層 LESSONS.md；若牽涉改角色的 model 指派，寫成第2層提案（走人類核可，**不自動改** agents 的 model——與 router-policy 的核可線一致）。
+4. **降層主張的品質門檻**：任何「換更便宜模型」的建議,都必須附本輪或歷史的品質代理證據(gate 通過率、退回迴圈數、工具錯誤率)——降層後品質不劣化才算數,不得只憑單價推算。
+5. **自我學習迴圈(條件式,零→低 token)**：若有 `.claude/token-lens/retro_optimize.py`,跑它把本輪每格(任務×criticality)的成本×品質 → champion/challenger 晉升提案(`out/retro-optimize-proposals.md`)。它用帕累托規則 + criticality 硬地板自動判「promote / trade-off / reject / 證據不足」。**晉升是對建議表的政策變更,一律列為第2層提案走人類核可——引擎不自己改 `router-policy.yaml`**(與本檔第2層、apply_policy 的核可線完全一致)。把「待核可晉升 N 筆」寫進 retro 摘要提醒使用者。
+
 ## 回報 orchestrator
 摘要：本輪最大的 1–3 個摩擦點、寫了哪些 LESSONS、有幾條待核可的改善提案（PROJECT-local / FRAMEWORK 各幾條）。明確提醒使用者：**有 FRAMEWORK 級提案待核可，核可後記得回流到 ~/Desktop/dev-factory 源頭。**
