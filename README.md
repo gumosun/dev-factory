@@ -78,7 +78,7 @@ Everyone runs on AI; almost nobody manages token ROI. dev-factory ships an **opt
 
 **The self-learning loop:** Radar intel (read-only) → recommendation table (decision SoR) → Router dispatch by task × criticality → sprint run → retro evaluation (three triggers: quality↑ upgrade / cost↑ downgrade / Radar opportunity) → Pareto + hard-floor → **human gate** ↺ write back to the table. Structurally it's the champion/challenger + canary + holdout loop an ad platform runs to optimize creatives/bids — with model selection as the thing being optimized. Downgrade proposals must carry quality-proxy evidence: **cheaper only if quality holds**.
 
-> `token-lens` is also a **standalone, independently-demoable repo** (the full project — 22 unit tests and an `report.html` visual report — lives in its own repo). What ships here under `vendor/token-lens/` is the runtime snapshot seeded into each project; see `vendor/token-lens/UPSTREAM.md` (refresh with `sync-from-upstream.sh`).
+> What ships here under `vendor/token-lens/` is a **runtime snapshot** — the observability + routing scripts seeded into each project; see `vendor/token-lens/UPSTREAM.md`. Edit it via the upstream working copy and refresh with `sync-from-upstream.sh`, not in place.
 
 ## Quick start
 
@@ -125,7 +125,7 @@ dev-factory/
 ├── skills/discovery/ front-end orchestrator (/discovery playbook)
 ├── templates/        CLAUDE.md contract + goal/backlog/lessons/ADR/design-system seeds
 ├── vendor/ui-ux-pro-max/  vendored design database + generator scripts (MIT; seeded into each project's .claude/uipro/ for the one-time S0 tailored-preset step)
-├── vendor/token-lens/     optional cost-observability + self-learning routing layer (ledger/quality/radar/router/retro_optimize + policy/intel; seeded into .claude/token-lens/; runtime snapshot of a standalone repo)
+├── vendor/token-lens/     optional cost-observability + self-learning routing layer (ledger/quality/radar/router/retro_optimize + policy/intel; runtime snapshot seeded into .claude/token-lens/; see UPSTREAM.md)
 ├── docs/PIPELINE.md  full flow diagrams and design rationale
 └── install.sh        installer
 ```
